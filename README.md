@@ -1,5 +1,7 @@
 # EnvMask
 
+`EnvMask` is a utility package that is used to change values of environment varialbles temporarily for testing and restore the original values after thing done.
+
 ## Installation
 
 Via `npm`:

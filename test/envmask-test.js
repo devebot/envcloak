@@ -147,6 +147,25 @@ describe('EnvMask', function() {
     });
   });
 
+  it('envmask.toString() should return the information of environment variables properly', function() {
+    assert.isUndefined(process.env.CLEANBUG_EV1);
+    assert.isUndefined(process.env.CLEANBUG_EV2);
+    assert.isUndefined(process.env.CLEANBUG_EV3);
+    assert.isUndefined(process.env.CLEANBUG_EV4);
+
+    process.env.CLEANBUG_EV4 = 3.14159;
+
+    envmask.setup({
+      CLEANBUG_EV2: 'hello',
+      CLEANBUG_EV3: true,
+      CLEANBUG_EV4: 1024
+    });
+
+    false && console.log('Before reset: ', '' + envmask.toString());
+
+    assert.equal('' + envmask, JSON.stringify(envmask.toJSON()));
+  });
+
   afterEach(function() {
     envmask.reset();
   });
