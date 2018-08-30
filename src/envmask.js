@@ -40,6 +40,10 @@ function Constructor(kwargs) {
     return info;
   }
 
+  this.toString = function() {
+    return JSON.stringify(this.toJSON());
+  }
+
   return this.setup(kwargs);
 }
 
