@@ -1,1 +1,1 @@
-module.exports = require('./lib/envmask');
+module.exports = require('./lib/envcloak');

@@ -1,6 +1,6 @@
 {
-  "name": "envmask",
-  "version": "0.1.1",
+  "name": "envcloak",
+  "version": "0.2.0",
   "description": "Cached Environment variables",
   "main": "index.js",
   "directories": {
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devebot/envmask.git"
+    "url": "git+https://github.com/devebot/envcloak.git"
   },
   "author": "devebot",
   "license": "MIT",

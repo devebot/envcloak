@@ -1,10 +1,10 @@
 'use strict';
 
 var assert = require('chai').assert;
-var EnvMask = require('../lib/envmask');
+var Intruder = require('../lib/intruder');
 
-describe('EnvMask', function() {
-  let envmask = new EnvMask();
+describe('Intruder', function() {
+  let intruder = new Intruder();
 
   beforeEach(function() {
     delete process.env.ENVMASK_EV1;
@@ -24,7 +24,7 @@ describe('EnvMask', function() {
     assert.equal(process.env.ENVMASK_BOOLEAN, 'false');
   });
 
-  it('main envmask should apply and revert environment variable properly', function() {
+  it('main intruder should apply and revert environment variable properly', function() {
     assert.isUndefined(process.env.ENVMASK_EV1);
     assert.isUndefined(process.env.ENVMASK_EV2);
     assert.isUndefined(process.env.ENVMASK_EV3);
@@ -32,7 +32,7 @@ describe('EnvMask', function() {
 
     process.env.ENVMASK_EV4 = 3.14159;
 
-    envmask.setup({
+    intruder.setup({
       ENVMASK_EV2: 'hello',
       ENVMASK_EV3: true,
       ENVMASK_EV4: 1024
@@ -43,7 +43,7 @@ describe('EnvMask', function() {
     assert.equal(process.env.ENVMASK_EV3, 'true');
     assert.equal(process.env.ENVMASK_EV4, '1024');
 
-    envmask.reset();
+    intruder.reset();
 
     assert.isUndefined(process.env.ENVMASK_EV1);
     assert.isUndefined(process.env.ENVMASK_EV2);
@@ -51,7 +51,7 @@ describe('EnvMask', function() {
     assert.equal(process.env.ENVMASK_EV4, '3.14159');
   });
 
-  it('sub envmasks should apply and revert environment variable properly', function() {
+  it('sub intruders should apply and revert environment variable properly', function() {
     process.env.ENVMASK_EV3 = 'root-scope';
     process.env.ENVMASK_EV4 = 3.14159;
 
@@ -61,7 +61,7 @@ describe('EnvMask', function() {
     assert.equal(process.env.ENVMASK_EV4, '3.14159');
     assert.isUndefined(process.env.ENVMASK_EV5);
 
-    envmask.setup({
+    intruder.setup({
       ENVMASK_EV2: 'hello',
       ENVMASK_EV4: 1024
     });
@@ -72,7 +72,7 @@ describe('EnvMask', function() {
     assert.equal(process.env.ENVMASK_EV4, '1024');
     assert.isUndefined(process.env.ENVMASK_EV5);
 
-    var sub = new EnvMask({
+    var sub = new Intruder({
       ENVMASK_EV3: 'sub-scope',
       ENVMASK_EV5: true
     }).setup({
@@ -93,7 +93,7 @@ describe('EnvMask', function() {
     assert.equal(process.env.ENVMASK_EV4, '1024');
     assert.isUndefined(process.env.ENVMASK_EV5);
 
-    envmask.reset();
+    intruder.reset();
 
     assert.isUndefined(process.env.ENVMASK_EV1);
     assert.isUndefined(process.env.ENVMASK_EV2);
@@ -102,7 +102,7 @@ describe('EnvMask', function() {
     assert.isUndefined(process.env.ENVMASK_EV5);
   });
 
-  it('envmask.toJSON() should return the state of object properly', function() {
+  it('intruder.toJSON() should return the state of object properly', function() {
     assert.isUndefined(process.env.ENVMASK_EV1);
     assert.isUndefined(process.env.ENVMASK_EV2);
     assert.isUndefined(process.env.ENVMASK_EV3);
@@ -110,15 +110,15 @@ describe('EnvMask', function() {
 
     process.env.ENVMASK_EV4 = 3.14159;
 
-    envmask.setup({
+    intruder.setup({
       ENVMASK_EV2: 'hello',
       ENVMASK_EV3: true,
       ENVMASK_EV4: 1024
     });
 
-    false && console.log('Before reset: ', JSON.stringify(envmask.toJSON(), null, 2));
+    false && console.log('Before reset: ', JSON.stringify(intruder.toJSON(), null, 2));
 
-    assert.deepEqual(envmask.toJSON(), {
+    assert.deepEqual(intruder.toJSON(), {
       "variables": [
         {
           "name": "ENVMASK_EV2",
@@ -138,16 +138,16 @@ describe('EnvMask', function() {
       ]
     });
 
-    envmask.reset();
+    intruder.reset();
 
-    false && console.log('After reset: ', JSON.stringify(envmask.toJSON(), null, 2));
+    false && console.log('After reset: ', JSON.stringify(intruder.toJSON(), null, 2));
 
-    assert.deepEqual(envmask.toJSON(), {
+    assert.deepEqual(intruder.toJSON(), {
       "variables": []
     });
   });
 
-  it('envmask.toString() should return the information of environment variables properly', function() {
+  it('intruder.toString() should return the information of environment variables properly', function() {
     assert.isUndefined(process.env.ENVMASK_EV1);
     assert.isUndefined(process.env.ENVMASK_EV2);
     assert.isUndefined(process.env.ENVMASK_EV3);
@@ -155,18 +155,18 @@ describe('EnvMask', function() {
 
     process.env.ENVMASK_EV4 = 3.14159;
 
-    envmask.setup({
+    intruder.setup({
       ENVMASK_EV2: 'hello',
       ENVMASK_EV3: true,
       ENVMASK_EV4: 1024
     });
 
-    false && console.log('Before reset: ', '' + envmask.toString());
+    false && console.log('Before reset: ', '' + intruder.toString());
 
-    assert.equal('' + envmask, JSON.stringify(envmask.toJSON()));
+    assert.equal('' + intruder, JSON.stringify(intruder.toJSON()));
   });
 
   afterEach(function() {
-    envmask.reset();
+    intruder.reset();
   });
 });
