@@ -48,3 +48,12 @@ function Constructor(kwargs) {
 }
 
 module.exports = Constructor;
+
+let _instance = null;
+
+Object.defineProperty(Constructor, 'instance', {
+  get: function() {
+    return (_instance = _instance || new Constructor());
+  },
+  set: function(val) {}
+});
