@@ -1,1 +1,1 @@
-module.exports = require('./lib/envcloak');
+module.exports = require('./lib/broker');
