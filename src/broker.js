@@ -16,6 +16,7 @@ function Constructor(kwargs) {
       if (prop in setter && misc.isFunction(setter[prop])) {
         return setter[prop].bind(setter);
       }
+      return target[prop];
     }
   });
 

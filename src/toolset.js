@@ -1,19 +1,9 @@
 'use strict';
 
-const invoke = function(block) {
-  return block();
-};
-
 function Toolset() {
-  const box = invoke(function () {
-    try {
-      return {
-        colors: require('colors')
-      }
-    } catch (error) {
-      return {};
-    }
-  });
+  const box = {
+    colors: safeRequire('colors/safe')
+  };
 
   this.has = function (packageName) {
     return box[packageName] !== null && box[packageName] !== undefined;
@@ -25,3 +15,11 @@ function Toolset() {
 }
 
 module.exports = new Toolset();
+
+function safeRequire (moduleName) {
+  try {
+    return require(moduleName);
+  } catch (error) {
+    return null;
+  }
+}
