@@ -1,9 +1,9 @@
 'use strict';
 
 var assert = require('chai').assert;
-var Setter = require('../lib/setter');
+var Setter = require('../../lib/setter');
 
-describe('Setter', function() {
+describe('envcloak:tdd:setter', function() {
   let setter = new Setter();
 
   beforeEach(function() {

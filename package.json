@@ -3,9 +3,6 @@
   "version": "0.2.0",
   "description": "Cached Environment variables",
   "main": "index.js",
-  "directories": {
-    "lib": "lib/"
-  },
   "files": [
     "bin/",
     "lib/"
@@ -31,5 +28,8 @@
     "chai": "^4.1.2",
     "debug": "^3.1.0",
     "mocha": "^4.1.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
   }
 }
