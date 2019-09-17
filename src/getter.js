@@ -1,8 +1,7 @@
 'use strict';
 
-const lodash = require('lodash');
 const Chalk = require('./chalk');
-const nodash = require('./misc');
+const misc = require('./misc');
 const util = require('util');
 
 function Constructor(params = {}) {
@@ -27,9 +26,13 @@ function Constructor(params = {}) {
   }
 
   this.define = function(descriptors) {
-    if (lodash.isArray(descriptors)) {
-      const defs = lodash.keyBy(descriptors, 'name');
-      lodash.defaults(definition, defs);
+    if (misc.isArray(descriptors)) {
+      for (const descriptor of descriptors) {
+        const name = descriptor && descriptor.name;
+        if (misc.isString(name)) {
+          definition[name] = descriptor;
+        }
+      }
     }
     return this;
   }
@@ -53,34 +56,34 @@ function Constructor(params = {}) {
   }
 
   this.getEnvNames = function() {
-    return lodash.keys(definition);
+    return misc.keys(definition);
   }
 
   this.getEnv = function(label, defaultValue) {
     if (label in store.env) return store.env[label];
-    if (!lodash.isString(label)) return undefined;
+    if (!misc.isString(label)) return undefined;
     if (!(label in definition)) return process.env[label] || defaultValue;
     const def = definition[label] || {};
     store.env[label] = getValue(label, def.scope);
     if (!store.env[label]) {
-      if (lodash.isUndefined(defaultValue)) {
+      if (misc.isUndefined(defaultValue)) {
         defaultValue = def.defaultValue;
       }
-      if (lodash.isArray(def.aliases)) {
-        lodash.forEach(def.aliases, function(alias) {
+      if (misc.isArray(def.aliases)) {
+        for (const alias of def.aliases) {
           store.env[label] = store.env[label] || getValue(alias, def.scope);
-        });
+        };
       }
       store.env[label] = store.env[label] || defaultValue;
     }
     if (def.type === 'array') {
-      store.env[label] = nodash.stringToArray(store.env[label]);
+      store.env[label] = misc.stringToArray(store.env[label]);
     }
     return store.env[label];
   }
 
   this.setEnv = function(envName, value) {
-    if (lodash.isString(envName)) {
+    if (misc.isString(envName)) {
       store.env[envName] = value;
     }
     return this;
@@ -88,7 +91,7 @@ function Constructor(params = {}) {
 
   this.getAcceptedValues = function(envName) {
     const def = definition[envName];
-    if (lodash.isObject(def)) {
+    if (misc.isObject(def)) {
       return def.enum || null;
     }
     return undefined;
@@ -96,14 +99,14 @@ function Constructor(params = {}) {
 
   this.setAcceptedValues = function(envName, acceptedValues) {
     const def = definition[envName];
-    if (lodash.isObject(def)) {
+    if (misc.isObject(def)) {
       def.enum = acceptedValues;
     }
     return this;
   }
 
   this.clearCache = function(keys) {
-    keys = nodash.arrayify(keys);
+    keys = misc.arrayify(keys);
     for (const key in store.env) {
       if (keys.length === 0 || keys.indexOf(key) >= 0) {
         delete store.env[key];
@@ -115,7 +118,7 @@ function Constructor(params = {}) {
   this.printEnvList = function(opts = {}) {
     const self = this;
     // get the excluded scopes
-    const excl = nodash.arrayify(opts.excludes || [ 'framework', 'test' ]);
+    const excl = misc.arrayify(opts.excludes || [ 'framework', 'test' ]);
     // print to console or muted?
     const lines = [];
     const muted = (opts.muted === true);
@@ -129,7 +132,8 @@ function Constructor(params = {}) {
     }
     // printing
     printInfo(chalk.heading1('[+] Environment variables:'));
-    lodash.forOwn(definition, function(info, label) {
+    for (const label in definition) {
+      const info = definition[label];
       if (info && info.scope && excl.indexOf(info.scope) >= 0) return;
       const envMsg = util.format(' |> %s: %s', chalk.envName(getLabel(label, info.scope)), info.description || '');
       if (info && info.defaultValue != null) {
@@ -150,7 +154,7 @@ function Constructor(params = {}) {
         printInfo('    - %s: %s', chalk.envAttrName('accepted values'), chalk.envAttrValue(JSON.stringify(info.enum)));
       }
       printInfo('    - %s: %s', chalk.envAttrName('current value'), chalk.currentValue(JSON.stringify(self.getEnv(label))));
-    });
+    };
     return lines;
   }
 

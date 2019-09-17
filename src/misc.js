@@ -1,6 +1,10 @@
 'use strict';
 
 function Misc () {
+  this.keys = function (o) {
+    return Object.keys(o);
+  }
+
   this.isFunction = function (f) {
     return (typeof f === 'function');
   }
@@ -11,6 +15,10 @@ function Misc () {
 
   this.isString = function(s) {
     return (typeof s) === 'string';
+  }
+
+  this.isUndefined = function (u) {
+    return u === undefined;
   }
 
   this.isArray = function(a) {

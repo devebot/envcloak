@@ -10,17 +10,27 @@ function Constructor(kwargs) {
 
   const wrapper = new Proxy(this, {
     get: function(target, prop, receiver) {
-      if (prop in getter && misc.isFunction(getter[prop])) {
+      if (isMethodOf(prop, getter)) {
         return getter[prop].bind(getter);
       }
-      if (prop in setter && misc.isFunction(setter[prop])) {
+      if (isMethodOf(prop, setter)) {
         return setter[prop].bind(setter);
       }
       return target[prop];
+    },
+    set: function(object, prop, value) {
+      if (isMethodOf(prop, getter) || isMethodOf(prop, setter)) {
+        throw new Error('Property [%s] must not be changed');
+      }
+      object[prop] = value;
     }
   });
 
   return wrapper;
+}
+
+function isMethodOf (prop, obj) {
+  return prop in obj && misc.isFunction(obj[prop]);
 }
 
 let _instance = null;

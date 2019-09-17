@@ -46,6 +46,21 @@ describe('envcloak:tdd:getter', function() {
     ]
   };
 
+  describe('getEnvNames()', function() {
+    it("get the names of an empty environment list properly", function() {
+      var envbox = new Getter();
+      assert.sameMembers(envbox.getEnvNames(), []);
+    });
+
+    it("get a list of defined environment names properly", function() {
+      var envbox = new Getter(ENV_DESCRIPTOR);
+      var expected = ENV_DESCRIPTOR.definition.map(function (item) {
+        return item.name;
+      });
+      assert.sameMembers(envbox.getEnvNames(), expected);
+    });
+  });
+
   describe('getEnv()', function() {
     before(function() {
       setter.setup({
