@@ -1,7 +1,6 @@
 'use strict';
 
-function Constructor(kwargs = {}) {
-
+function Constructor (kwargs = {}) {
   let _store = {};
 
   this.setup = function(vars) {
@@ -30,7 +29,7 @@ function Constructor(kwargs = {}) {
 
   this.toJSON = function() {
     let info = { variables: [] };
-    for(let key in _store) {
+    for (let key in _store) {
       info.variables.push({
         name: key,
         backup: _store[key],
