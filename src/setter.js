@@ -1,16 +1,23 @@
 'use strict';
 
+const nodash = require('./misc');
+
 function Constructor (kwargs = {}) {
+  let _namespace = kwargs.namespace;
   let _store = {};
 
   this.setup = function(vars) {
     vars = vars || {};
     Object.keys(vars).forEach(function(key) {
-      _store[key] = process.env[key];
+      let newKey = key;
+      if (nodash.isString(_namespace) && !key.startsWith(_namespace)) {
+        newKey = _namespace + '_' + key;
+      }
+      _store[newKey] = process.env[newKey];
       if (vars[key] == null) {
-        delete process.env[key];
+        delete process.env[newKey];
       } else {
-        process.env[key] = vars[key];
+        process.env[newKey] = vars[key];
       }
     });
     return this;
