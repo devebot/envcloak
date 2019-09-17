@@ -73,8 +73,10 @@ describe('envcloak:tdd:setter', function() {
     assert.isUndefined(process.env.ENVMASK_EV5);
 
     var sub = new Setter({
-      ENVMASK_EV3: 'sub-scope',
-      ENVMASK_EV5: true
+      presets: {
+        ENVMASK_EV3: 'sub-scope',
+        ENVMASK_EV5: true
+      }
     }).setup({
       ENVMASK_EV4: 4096
     });
