@@ -173,22 +173,4 @@ describe('envcloak:tdd:setter', function() {
       setter.reset();
     });
   });
-
-  describe('namespace', function () {
-    let setter = new Setter({
-      namespace: 'EXAMPLE'
-    });
-
-    it('Check the namespace before set a value to the environment variable', function () {
-      setter.setup({
-        'EXAMPLE_LIB_NAME': 'My Example',
-        'LIB_VERSION': '1.2.3'
-      });
-
-      assert.equal(process.env['EXAMPLE_LIB_NAME'], 'My Example');
-      assert.isUndefined(process.env['LIB_NAME']);
-      assert.equal(process.env['EXAMPLE_LIB_VERSION'], '1.2.3');
-      assert.isUndefined(process.env['LIB_VERSION']);
-    });
-  });
 });

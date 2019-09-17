@@ -131,7 +131,7 @@ function Constructor(params = {}) {
     printInfo(chalk.heading1('[+] Environment variables:'));
     lodash.forOwn(definition, function(info, label) {
       if (info && info.scope && excl.indexOf(info.scope) >= 0) return;
-      const envMsg = util.format(' |> %s: %s', chalk.envName(getLabel(label, info.scope)), info.description);
+      const envMsg = util.format(' |> %s: %s', chalk.envName(getLabel(label, info.scope)), info.description || '');
       if (info && info.defaultValue != null) {
         printInfo(envMsg + util.format(' (default: %s)', chalk.defaultValue(JSON.stringify(info.defaultValue))));
       } else {

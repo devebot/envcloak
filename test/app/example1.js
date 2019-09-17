@@ -36,4 +36,4 @@ console.log('Version: %s', process.env['APP_BUILT_VERSION']);
 
 console.log('---------------------------------------------');
 
-console.log(envcloak.printEnvList());
+envcloak.printEnvList();
