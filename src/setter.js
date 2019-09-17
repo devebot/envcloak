@@ -1,6 +1,6 @@
 'use strict';
 
-function Constructor(kwargs) {
+function Constructor(kwargs = {}) {
 
   let _store = {};
 
@@ -44,7 +44,7 @@ function Constructor(kwargs) {
     return JSON.stringify(this.toJSON());
   }
 
-  return this.setup(kwargs);
+  return this.setup(kwargs.presets);
 }
 
 module.exports = Constructor;

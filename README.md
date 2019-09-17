@@ -7,7 +7,7 @@
 Via `npm`:
 
 ```shell
-$ npm install --save-dev envcloak
+npm install --save-dev envcloak
 ```
 
 ## API
@@ -21,10 +21,21 @@ var Envcloak = require('envcloak');
 ### Constructor
 
 ```javascript
-var envcloak = new Envcloak(vars);
+var envcloak = new Envcloak(kwargs);
 ```
 
-The constructor (`Envcloak`) receives a map of key/values that will be used to override the corresponding environment variables in `process.env`. It backs up the current environment variables before overriding. These backed up values will be recovered when `reset()` method is invoked.
+The constructor (`Envcloak`) receives an options that contains a map of key/values (`presets`) that will be used to override the corresponding environment variables in `process.env`. It backs up the current environment variables before overriding. These backed up values will be recovered when `reset()` method is invoked.
+
+Example:
+
+```javascript
+var envbox = new Envcloak({
+  presets: {
+    APP_BUILT_VERSION: '0.1.2',
+    NODE_ENV: 'beta'
+  }
+});
+```
 
 ### Methods
 
