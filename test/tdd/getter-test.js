@@ -65,10 +65,10 @@ describe('envcloak:tdd:getter', function() {
     before(function() {
       setter.setup({
         ENV_PRESETS_STRING: "hello world",
-        DEVEBOT_PRESETS_STRING: "hello devebot",
+        ENVCLOAK_PRESETS_STRING: "hello devebot",
         ENV_EMPTY_ARRAY1: "",
         ENV_EMPTY_ARRAY2: ", ,",
-        DEVEBOT_NORMAL_ARRAY: "value 1, value 2, value 3",
+        ENVCLOAK_NORMAL_ARRAY: "value 1, value 2, value 3",
         ENV_TRUE: "true",
         ENV_FALSE: "false"
       });
@@ -95,10 +95,10 @@ describe('envcloak:tdd:getter', function() {
     beforeEach(function() {
       setter.setup({
         ENV_PRESETS_STRING: "hello world",
-        DEVEBOT_PRESETS_STRING: "hello devebot",
+        ENVCLOAK_PRESETS_STRING: "hello devebot",
         ENV_EMPTY_ARRAY1: "",
         ENV_EMPTY_ARRAY2: ", ,",
-        DEVEBOT_NORMAL_ARRAY: "value 1, value 2, value 3",
+        ENVCLOAK_NORMAL_ARRAY: "value 1, value 2, value 3",
         ENV_TRUE: "true",
         ENV_FALSE: "false"
       });
@@ -118,10 +118,10 @@ describe('envcloak:tdd:getter', function() {
       assert.sameMembers(privateEnvbox.getEnv("EMPTY_ARRAY2"), []);
       assert.sameMembers(privateEnvbox.getEnv("NORMAL_ARRAY"), ["value 1", "value 2", "value 3"]);
       assert.equal(process.env.ENV_PRESETS_STRING, myOwnershipLabel);
-      assert.equal(process.env.DEVEBOT_PRESETS_STRING, "hello devebot");
+      assert.equal(process.env.ENVCLOAK_PRESETS_STRING, "hello devebot");
       assert.equal(process.env.ENV_EMPTY_ARRAY1, myOwnershipLabel);
       assert.equal(process.env.ENV_EMPTY_ARRAY2, myOwnershipLabel);
-      assert.equal(process.env.DEVEBOT_NORMAL_ARRAY, "value 1, value 2, value 3");
+      assert.equal(process.env.ENVCLOAK_NORMAL_ARRAY, "value 1, value 2, value 3");
       assert.equal(process.env.ENV_TRUE, "true");
       assert.equal(process.env.ENV_FALSE, "false");
     });
@@ -138,10 +138,10 @@ describe('envcloak:tdd:getter', function() {
       assert.sameMembers(privateEnvbox.getEnv("EMPTY_ARRAY2"), []);
       assert.sameMembers(privateEnvbox.getEnv("NORMAL_ARRAY"), ["value 1", "value 2", "value 3"]);
       assert.isUndefined(process.env.ENV_PRESETS_STRING);
-      assert.equal(process.env.DEVEBOT_PRESETS_STRING, "hello devebot");
+      assert.equal(process.env.ENVCLOAK_PRESETS_STRING, "hello devebot");
       assert.isUndefined(process.env.ENV_EMPTY_ARRAY1);
       assert.isUndefined(process.env.ENV_EMPTY_ARRAY2);
-      assert.equal(process.env.DEVEBOT_NORMAL_ARRAY, "value 1, value 2, value 3");
+      assert.equal(process.env.ENVCLOAK_NORMAL_ARRAY, "value 1, value 2, value 3");
       assert.equal(process.env.ENV_TRUE, "true");
       assert.equal(process.env.ENV_FALSE, "false");
     });

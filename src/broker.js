@@ -42,4 +42,13 @@ Object.defineProperty(Constructor, 'instance', {
   set: function(val) {}
 });
 
+Object.defineProperty(Constructor, 'DEFAULT_NAMESPACE', {
+  get: function() {
+    return Getter.DEFAULT_NAMESPACE;
+  },
+  set: function(val) {
+    Getter.DEFAULT_NAMESPACE = val;
+  }
+});
+
 module.exports = Constructor;

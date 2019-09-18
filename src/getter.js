@@ -6,13 +6,13 @@ const util = require('util');
 
 function Constructor(params = {}) {
   const definition = {};
-  const store = { env: {}, namespace: params.namespace || DEFAULT_NAMESPACE };
+  const store = { env: {}, namespace: params.namespace || getDefaultNamespace() };
 
   function getLabel(name, scope) {
     if (scope === 'framework') {
-      return DEFAULT_NAMESPACE + '_' + name;
+      return getDefaultNamespace() + '_' + name;
     }
-    return (store.namespace || DEFAULT_NAMESPACE) + '_' + name;
+    return (store.namespace || getDefaultNamespace()) + '_' + name;
   }
 
   function getValue(name, scope) {
@@ -22,7 +22,7 @@ function Constructor(params = {}) {
         return process.env[longname];
       }
     }
-    return process.env[DEFAULT_NAMESPACE + '_' + name];
+    return process.env[getDefaultNamespace() + '_' + name];
   }
 
   this.define = function(descriptors) {
@@ -161,9 +161,13 @@ function Constructor(params = {}) {
   this.define(params.definition);
 }
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ color chalks
+Constructor.DEFAULT_NAMESPACE = 'ENVCLOAK';
 
-const DEFAULT_NAMESPACE = 'DEVEBOT';
+function getDefaultNamespace () {
+  return Constructor.DEFAULT_NAMESPACE;
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ color chalks
 
 const DEFAULT_THEMES = {
   heading1: ['cyan', 'bold'],

@@ -4,6 +4,7 @@ var assert = require('chai').assert;
 var Broker = require('../../lib/broker');
 var Getter = require('../../lib/getter');
 var Setter = require('../../lib/setter');
+var misc = require('../../lib/misc');
 
 describe('envcloak:tdd:broker', function() {
   it('return its own properties if these property names are not belong to Getter and Setter', function () {
@@ -68,12 +69,8 @@ describe('envcloak:tdd:broker', function() {
 
     Object.keys(broker).forEach(function(fieldName) {
       if (typeof broker[fieldName] === 'function') {
-        assert.isTrue(isFunction(getter[fieldName]) || isFunction(setter[fieldName]));
+        assert.isTrue(misc.isFunction(getter[fieldName]) || misc.isFunction(setter[fieldName]));
       }
     })
   });
 });
-
-function isFunction (f) {
-  return typeof f === 'function';
-}
