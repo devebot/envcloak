@@ -4,6 +4,7 @@ var lodash = require('lodash');
 var assert = require('chai').assert;
 var setter = require('../../lib/setter').instance;
 var Getter = require('../../lib/getter');
+var misc = require('../../lib/misc');
 
 describe('envcloak:tdd:getter', function() {
   this.timeout(60 * 1000 * 10);
@@ -151,6 +152,43 @@ describe('envcloak:tdd:getter', function() {
     });
   });
 
+  describe('clearCache()', function() {
+    var privateEnvbox = new Getter(ENV_DESCRIPTOR);
+    var presetsVars = {
+      ENV_PRESETS_STRING: "hello world",
+      ENVCLOAK_PRESETS_STRING: "hello devebot",
+      ENV_EMPTY_ARRAY1: "",
+      ENV_EMPTY_ARRAY2: ", ,",
+      ENV_NORMAL_ARRAY: "a, b, c",
+      ENVCLOAK_NORMAL_ARRAY: "value 1, value 2, value 3",
+      ENV_TRUE: "true",
+      ENV_FALSE: "false"
+    }
+
+    it('clear the values of the cached variables properly', function () {
+      setter.setup(presetsVars);
+
+      assert.equal(privateEnvbox.getEnv('PRESETS_STRING'), 'hello world');
+      assert.sameMembers(privateEnvbox.getEnv('NORMAL_ARRAY'), ['a', 'b', 'c']);
+      assert.sameMembers(privateEnvbox.getEnv('EMPTY_ARRAY1'), []);
+      assert.sameMembers(privateEnvbox.getEnv('EMPTY_ARRAY2'), []);
+
+      setter.reset();
+
+      assert.equal(privateEnvbox.getEnv('PRESETS_STRING'), 'hello world');
+      assert.sameMembers(privateEnvbox.getEnv('NORMAL_ARRAY'), ['a', 'b', 'c']);
+      assert.sameMembers(privateEnvbox.getEnv('EMPTY_ARRAY1'), []);
+      assert.sameMembers(privateEnvbox.getEnv('EMPTY_ARRAY2'), []);
+
+      privateEnvbox.clearCache(['PRESETS_STRING', 'ENV_NORMAL_ARRAY']);
+
+      assert.equal(privateEnvbox.getEnv('PRESETS_STRING'), 'empty');
+      assert.sameMembers(privateEnvbox.getEnv('NORMAL_ARRAY'), []);
+      assert.sameMembers(privateEnvbox.getEnv('EMPTY_ARRAY1'), []);
+      assert.sameMembers(privateEnvbox.getEnv('EMPTY_ARRAY2'), []);
+    });
+  });
+
   describe('printEnvList()', function() {
     it("print the empty environment variables list properly", function () {
       var privateEnvbox = new Getter();
@@ -158,6 +196,7 @@ describe('envcloak:tdd:getter', function() {
       false && console.log(JSON.stringify(output, null, 2));
       var expected = [
         '[+] Environment variables:',
+        '[*] End'
       ];
       assert.sameMembers(output, expected);
     });
@@ -191,7 +230,8 @@ describe('envcloak:tdd:getter', function() {
         '    - current value: []',
         ' |> ENV_NORMAL_ARRAY: normal array example',
         '    - format: (comma-separated-string)',
-        '    - current value: ["value 1","value 2","value 3"]'
+        '    - current value: ["value 1","value 2","value 3"]',
+        '[*] End'
       ]
       var output = privateEnvbox.printEnvList({ muted: true });
       false && console.log(JSON.stringify(output, null, 2));

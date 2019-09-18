@@ -41,6 +41,17 @@ function Misc () {
     }
     return labels;
   }
+
+  this.removeNamespace = function (names, namespace) {
+    if (!this.isArray(names)) {
+      return names;
+    }
+    const ns_underscore = namespace + '_';
+    return names.map(function (name) {
+      const hasPrefix = name.indexOf(ns_underscore) === 0;
+      return hasPrefix ? name.substr(ns_underscore.length) : name;
+    });
+  }
 }
 
 module.exports = new Misc();

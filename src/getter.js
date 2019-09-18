@@ -37,7 +37,11 @@ function Constructor(params = {}) {
     return this;
   }
 
-  this.setNamespace = function(ns, opts = {}) {
+  this.getNamespace = function () {
+    return store.namespace || Constructor.NAMESPACE;
+  }
+
+  this.setNamespace = function (ns, opts = {}) {
     store.namespace = ns;
     if (opts.occupyValues) {
       for (const envKey in definition) {
@@ -106,7 +110,7 @@ function Constructor(params = {}) {
   }
 
   this.clearCache = function(keys) {
-    keys = misc.arrayify(keys);
+    keys = misc.removeNamespace(misc.arrayify(keys), this.getNamespace());
     for (const key in store.env) {
       if (keys.length === 0 || keys.indexOf(key) >= 0) {
         delete store.env[key];
@@ -155,6 +159,7 @@ function Constructor(params = {}) {
       }
       printInfo('    - %s: %s', chalk.envAttrName('current value'), chalk.currentValue(JSON.stringify(self.getEnv(label))));
     };
+    printInfo(chalk.heading1('[*] End'));
     return lines;
   }
 
