@@ -6,13 +6,13 @@ const util = require('util');
 
 function Constructor(params = {}) {
   const definition = {};
-  const store = { env: {}, namespace: params.namespace || getDefaultNamespace() };
+  const store = { env: {}, namespace: params.namespace || Constructor.NAMESPACE };
 
   function getLabel(name, scope) {
     if (scope === 'framework') {
-      return getDefaultNamespace() + '_' + name;
+      return Constructor.NAMESPACE + '_' + name;
     }
-    return (store.namespace || getDefaultNamespace()) + '_' + name;
+    return (store.namespace || Constructor.NAMESPACE) + '_' + name;
   }
 
   function getValue(name, scope) {
@@ -22,7 +22,7 @@ function Constructor(params = {}) {
         return process.env[longname];
       }
     }
-    return process.env[getDefaultNamespace() + '_' + name];
+    return process.env[Constructor.NAMESPACE + '_' + name];
   }
 
   this.define = function(descriptors) {
@@ -161,11 +161,7 @@ function Constructor(params = {}) {
   this.define(params.definition);
 }
 
-Constructor.DEFAULT_NAMESPACE = 'ENVCLOAK';
-
-function getDefaultNamespace () {
-  return Constructor.DEFAULT_NAMESPACE;
-}
+Constructor.NAMESPACE = 'ENVCLOAK';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ color chalks
 

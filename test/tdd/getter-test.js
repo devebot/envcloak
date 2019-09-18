@@ -152,7 +152,18 @@ describe('envcloak:tdd:getter', function() {
   });
 
   describe('printEnvList()', function() {
-    before(function() {
+    it("print the empty environment variables list properly", function () {
+      var privateEnvbox = new Getter();
+      var output = privateEnvbox.printEnvList({ muted: true });
+      false && console.log(JSON.stringify(output, null, 2));
+      var expected = [
+        '[+] Environment variables:',
+      ];
+      assert.sameMembers(output, expected);
+    });
+
+    it("print environment variables correctly", function() {
+      // presets the environment variables
       setter.setup({
         ENV_PRESETS_STRING: "hello devebot",
         ENV_EMPTY_ARRAY1: "",
@@ -161,9 +172,6 @@ describe('envcloak:tdd:getter', function() {
         ENV_TRUE: "true",
         ENV_FALSE: "false"
       });
-    });
-
-    it("print environment variables correctly", function() {
       // defining the getter object
       var privateEnvbox = new Getter(ENV_DESCRIPTOR);
       // display
